@@ -4,16 +4,17 @@ import NotesIcon from "@mui/icons-material/Notes";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 import "./styles/leftPanel.css";
-import { Tab } from "../../App";
+import Calendar from "../calendar/Calendar";
+import TaskLists from "../taskList/TaskLists";
+import Notes from "../notes/Notes";
+import Settings from "../settings/Settings";
+import useTabContext from "../hooks/useTabContext";
 
-interface Props{
-  setTab: React.Dispatch<React.SetStateAction<Tab>>
-}
-
-function LeftPanel({setTab}: Props) {
+function LeftPanel() {
+  const {setTab} = useTabContext();
   return (
     <div className="leftPanel">
-      <div className="bookmarkContainer" onClick={() => setTab("calendar")}>
+      <div className="bookmarkContainer" onClick={() => setTab(<Calendar />)}>
         <svg width="125" height="100">
           <polygon
             className="bookmark"
@@ -23,7 +24,7 @@ function LeftPanel({setTab}: Props) {
         </svg>
         <CalendarMonthIcon className="icon" />
       </div>
-      <div className="bookmarkContainer" onClick={() => setTab("task list")}>
+      <div className="bookmarkContainer" onClick={() => setTab(<TaskLists />)}>
         <svg width="125" height="100">
           <polygon
             className="bookmark"
@@ -33,7 +34,7 @@ function LeftPanel({setTab}: Props) {
         </svg>
         <ChecklistIcon className="icon" />
       </div>
-      <div className="bookmarkContainer" onClick={() => setTab("notes")}>
+      <div className="bookmarkContainer" onClick={() => setTab(<Notes />)}>
         <svg width="125" height="100">
           <polygon
             className="bookmark"
@@ -43,7 +44,7 @@ function LeftPanel({setTab}: Props) {
         </svg>
         <NotesIcon className="icon" />
       </div>
-      <div className="bookmarkContainer" onClick={() => setTab("settings")}>
+      <div className="bookmarkContainer" onClick={() => setTab(<Settings />)}>
         <svg width="125" height="100">
           <polygon
             className="bookmark"

@@ -29,11 +29,6 @@
 }
 .calendar {
   padding: 20px;
-  /* width: 75%; */
-  background-color: #252e40;
-
-  height: 100%;
-  width: calc(100% - 125px);
 }
 .calendar ul {
   display: flex;

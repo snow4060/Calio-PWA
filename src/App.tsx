@@ -1,29 +1,16 @@
-import { useState } from "react";
 import "./App.css";
-import Calendar from "./components/calendar/Calendar";
 import LeftPanel from "./components/leftPanel/LeftPanel";
-import TaskList from "./components/taskList/TaskList";
-import Notes from "./components/notes/Notes";
-import Settings from "./components/settings/Settings";
-
-export type Tab = "calendar" | "task list" | "notes" | "settings";
+import TaskContextProvider from "./components/context/TaskContext";
+import useTabContext from "./components/hooks/useTabContext";
 
 function App() {
-  const [tab, setTab] = useState<Tab>("calendar");
+  const {tab} = useTabContext()
   return (
     <>
-      <LeftPanel setTab={setTab} />
-      {tab === "calendar" ? (
-        <Calendar />
-      ) : tab === "task list" ? (
-        <TaskList />
-      ) : tab === "notes" ? (
-        <Notes />
-      ) : tab === "settings" ? (
-        <Settings />
-      ) : (
-        <></>
-      )}
+        <LeftPanel />
+        <TaskContextProvider>
+          {tab}
+        </TaskContextProvider>
     </>
   );
 }

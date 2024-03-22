@@ -31,7 +31,6 @@ function Calendar() {
     const height =
       headerRef.current?.clientHeight + weeksRef.current?.clientHeight;
     setDaysHeight(height);
-    console.log(height);
   }, []);
 
   const {

@@ -1,0 +1,41 @@
+.taskLists header {
+  padding: 10px 30px 25px;
+  font-size: 36px;
+  color: aliceblue;
+}
+.divider {
+  border-top: 2px solid #5d79a5;
+  margin: 0 50px 0;
+}
+.taskOverview {
+  margin-left: 50px;
+  margin-right: 50px;
+  position: relative;
+  color: aliceblue;
+  padding: 10px 10px 10px;
+}
+.taskOverview:hover {
+  cursor: pointer;
+}
+.taskOverview .title {
+  font-size: 20px;
+  /* font-weight: 600; */
+}
+.taskOverview .details {
+  margin-left: 3%;
+}
+.taskOverview .date {
+  margin-left: 10%;
+}
+
+.taskList header {
+  padding: 10px 30px 10px;
+  font-size: 28px;
+  color: aliceblue;
+}
+
+.taskListToolbar {
+  padding: 0 5%;
+  display: flex;
+  justify-content: space-between;
+}
