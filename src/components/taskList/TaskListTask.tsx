@@ -22,11 +22,11 @@ const TaskListTask = forwardRef(
     ref: Ref<HTMLLIElement>
   ) => {
     const {
-      taskArray: { removeTaskListInsstance },
+      taskArray: { removeTaskListInstance },
     } = useTaskContext();
 
     const deleteTaskListInstance = () => {
-      removeTaskListInsstance(taskListId, task.id);
+      removeTaskListInstance(taskListId, task.id);
     };
 
     return (

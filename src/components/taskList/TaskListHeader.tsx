@@ -3,16 +3,51 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
 import TaskLists from "./TaskLists";
 import useTabContext from "../hooks/useTabContext";
+import useTaskContext from "../hooks/useTaskContext";
+import { useEffect } from "react";
 
 interface Props {
-  name: string;
+  id: string;
 }
 
-function TaskListHeader({ name }: Props) {
+function TaskListHeader({ id }: Props) {
   const { setTab } = useTabContext();
+  const { taskArray } = useTaskContext();
+
+  let name = "";
+  taskArray.taskArray.array.forEach((task) => {
+    const index = task.taskList?.findIndex(
+      (taskListInstance) => taskListInstance.taskListId === id
+    );
+    if (index !== -1 && index !== undefined) {
+      name = task.taskList![index].taskListName;
+    }
+  });
+
   const handleClickBack = () => {
     setTab(<TaskLists />);
   };
+
+  const createNewTask = () => {
+    taskArray.addTask("new task", undefined, undefined, {
+      taskListName: name,
+      taskListId: id, 
+    })
+  }
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    if(e.key === "Enter"){
+      createNewTask()
+    }
+  }
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    }
+  })
 
   return (
     <>
@@ -25,7 +60,7 @@ function TaskListHeader({ name }: Props) {
           </Button>
 
           <Stack spacing={0.5} direction={"row"}>
-            <Button>
+            <Button onClick={createNewTask}>
               Add Task (
               <KeyboardReturnIcon />)
             </Button>

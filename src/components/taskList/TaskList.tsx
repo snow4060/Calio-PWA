@@ -12,15 +12,16 @@ import useTaskContext from "../hooks/useTaskContext";
 import { formatTaskLists } from "./formatTaskList";
 
 interface Props {
-  name: string;
   id: string;
 }
 
-function TaskList({ name, id }: Props) {
+function TaskList({ id }: Props) {
   const { taskArray } = useTaskContext();
 
-  const allTaskLists = formatTaskLists(taskArray.taskArray.array).filter(taskList => taskList.id === id);
-  const tasks =  allTaskLists.length > 0 ? allTaskLists[0].tasks : []; 
+  const allTaskLists = formatTaskLists(taskArray.taskArray.array).filter(
+    (taskList) => taskList.id === id
+  );
+  const tasks = allTaskLists.length > 0 ? allTaskLists[0].tasks : [];
 
   const sortedTaskList = tasks
     .slice()
@@ -35,7 +36,7 @@ function TaskList({ name, id }: Props) {
   return (
     <>
       <div className="taskList rightPanel">
-        <TaskListHeader name={name} />
+        <TaskListHeader id={id} />
 
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="tasks-wrapper">
@@ -70,17 +71,6 @@ function TaskList({ name, id }: Props) {
             )}
           </Droppable>
         </DragDropContext>
-
-        {/* <Sortable className="tasks">
-          {sortedTaskList.map((task, index) => (
-            <TaskListTask task={task} key={index} />
-          ))}
-        </Sortable> */}
-
-        {/* <ul className="tasks">
-          {
-          ))}
-        </ul> */}
       </div>
     </>
   );

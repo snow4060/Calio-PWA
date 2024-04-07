@@ -1,5 +1,6 @@
 import { Task } from "../../context/TaskContext";
 import useArray from "./useArray";
+import { v4 as uuidv4 } from "uuid";
 
 function useTaskArray(defaultValue?: Task[]) {
   const taskArray = useArray<Task>(defaultValue);
@@ -95,7 +96,7 @@ function useTaskArray(defaultValue?: Task[]) {
     taskArray.setArray(newTaskArray);
   }
 
-  function removeTaskListInsstance(taskListId: string, taskId: string) {
+  function removeTaskListInstance(taskListId: string, taskId: string) {
     const newTaskArray = [...taskArray.array];
     const taskIndex = newTaskArray.findIndex((task) => task.id === taskId);
     if (taskIndex === -1) {
@@ -127,12 +128,80 @@ function useTaskArray(defaultValue?: Task[]) {
     taskArray.setArray(newTaskArray);
   }
 
+  function getHighestTaskListIndex(taskListId: string) {
+    let index = 0;
+    taskArray.array.forEach((task) => {
+      task.taskList?.forEach((taskListInstance) => {
+        if (
+          taskListInstance.taskListId === taskListId &&
+          taskListInstance.index > index
+        ) {
+          index = taskListInstance.index;
+        }
+      });
+    });
+    return index;
+  }
+  function getHighestCalendarIndex(categoryId: string) {
+    let index = 0;
+    taskArray.array.forEach((task) => {
+      task.calendar?.forEach((calendarInstance) => {
+        if (
+          calendarInstance.categoryId === categoryId &&
+          calendarInstance.index > index
+        ) {
+          index = calendarInstance.index;
+        }
+      });
+    });
+    return index;
+  }
+
+  function addTask(
+    title: string,
+    details?: string,
+    calendar?: {
+      calendarName: string;
+      calendarId: string;
+      calendarDate: Date | null;
+    },
+    taskList?: { taskListName: string; taskListId: string }
+  ) {
+    taskArray.push({
+      title: title,
+      details: details ? details : "",
+      completed: false,
+      calendar: calendar
+        ? [
+            {
+              categoryId: calendar.calendarId,
+              categoryName: calendar.calendarName,
+              date: calendar.calendarDate,
+              index: getHighestCalendarIndex(calendar.calendarId),
+            },
+          ]
+        : null,
+      taskList: taskList
+        ? [
+            {
+              taskListId: taskList.taskListId,
+              taskListName: taskList.taskListName,
+              lastModified: new Date(),
+              index: getHighestTaskListIndex(taskList.taskListId),
+            },
+          ]
+        : null,
+      id: uuidv4(),
+    });
+  }
+
   return {
     taskArray,
     getTaskIndex,
     setTaskProp,
     reindexTaskList,
-    removeTaskListInsstance,
+    removeTaskListInstance,
+    addTask
   };
 }
 

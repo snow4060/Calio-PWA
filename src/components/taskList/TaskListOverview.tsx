@@ -20,7 +20,7 @@ function TaskListOverview({ name, tasks, lastModified, id }: Props) {
   }
 
   const handleClick = () => {
-    setTab(<TaskList name={name} id={id}/>);
+    setTab(<TaskList id={id}/>);
   };
 
   return (
