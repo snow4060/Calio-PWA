@@ -31,23 +31,24 @@ function TaskListHeader({ id }: Props) {
   const createNewTask = () => {
     taskArray.addTask("new task", undefined, undefined, {
       taskListName: name,
-      taskListId: id, 
-    })
-  }
+      taskListId: id,
+    });
+  };
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    if(e.key === "Enter"){
-      createNewTask()
+    if (e.key === "Enter") {
+      e.preventDefault();
+      createNewTask();
     }
-  }
+  };
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
-    }
-  })
+    };
+  });
 
   return (
     <>
