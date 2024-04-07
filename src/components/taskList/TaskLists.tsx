@@ -1,4 +1,7 @@
-import { Task, TaskWithTaskList } from "../context/TaskContext";
+import {
+  Task,
+  TaskWithSingularTaskList,
+} from "../context/TaskContext";
 import useTaskContext from "../hooks/useTaskContext";
 import TaskListOverview from "./TaskListOverview";
 
@@ -10,37 +13,45 @@ function TaskLists() {
   const formatTaskLists = (tasks: Task[]) => {
     const formattedTaskLists: {
       name: string;
-      taskList: TaskWithTaskList[];
+      id: string;
+      tasks: TaskWithSingularTaskList[];
       lastModified: Date;
     }[] = [];
     tasks.forEach((task) => {
       if (task.taskList !== null) {
         task.taskList.forEach((taskListInstance) => {
-          const taskListName = taskListInstance.taskListName;
+          const taskListId = taskListInstance.taskListId;
           const taskListIndex = formattedTaskLists.findIndex(
-            (taskList) => taskList.name === taskListName
+            (taskList) => taskList.id === taskListId
           );
           // task list with name already exists in array
           if (taskListIndex !== -1) {
-            formattedTaskLists[taskListIndex].taskList.push(
-              task as TaskWithTaskList
-            );
+            formattedTaskLists[taskListIndex].tasks.push({
+              ...task,
+              taskList: taskListInstance,
+            });
           }
           // task list with name does not yet exist in array
           else {
             formattedTaskLists.push({
-              name: taskListName,
-              taskList: [task as TaskWithTaskList],
+              name: taskListInstance.taskListName,
+              id: taskListId,
+              tasks: [
+                {
+                  ...task,
+                  taskList: taskListInstance,
+                },
+              ],
               lastModified: new Date(),
             });
           }
         });
       }
       formattedTaskLists.forEach((taskList) => {
-        let latestDate: Date = taskList.taskList[0].taskList[0].lastModified;
-        taskList.taskList.forEach((task) => {
-          if (task.taskList[0].lastModified > latestDate) {
-            latestDate = task.taskList[0].lastModified;
+        let latestDate = taskList.tasks[0].taskList.lastModified;
+        taskList.tasks.forEach((task) => {
+          if (task.taskList.lastModified > latestDate) {
+            latestDate = task.taskList.lastModified;
           }
         });
         taskList.lastModified = latestDate;
@@ -49,13 +60,11 @@ function TaskLists() {
     return formattedTaskLists;
   };
 
-  const formattedTaskLists = formatTaskLists(taskArray.array);
+  const formattedTaskLists = formatTaskLists(taskArray.taskArray.array);
 
   formattedTaskLists.sort((a, b) => {
     return b.lastModified.getTime() - a.lastModified.getTime();
   });
-
-  console.log(formattedTaskLists);
 
   return (
     <div className="taskLists rightPanel">
@@ -64,8 +73,9 @@ function TaskLists() {
       {formattedTaskLists.map((taskList, index) => (
         <TaskListOverview
           name={taskList.name}
-          tasks={taskList.taskList}
+          tasks={taskList.tasks}
           lastModified={taskList.lastModified}
+          id={taskList.id}
           key={index}
         />
       ))}

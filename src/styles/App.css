@@ -22,6 +22,6 @@ body {
 .rightPanel {
   filter: drop-shadow(-1px 0px 4px black);
   background-color: #252e40;
-  width: 100%;
+  width: calc(100% - 125px);
   height: 100%;
 }

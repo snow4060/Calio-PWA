@@ -1,38 +1,89 @@
-import { Button, Stack } from "@mui/material";
-import { TaskWithTaskList } from "../context/TaskContext";
+import { TaskWithSingularTaskList } from "../context/TaskContext";
+import TaskListHeader from "./TaskListHeader";
+import TaskListTask from "./TaskListTask";
+
+import {
+  DragDropContext,
+  Draggable,
+  DropResult,
+  Droppable,
+} from "@hello-pangea/dnd";
+import TaskListTasksWrapper from "./TaskListTasksWrapper";
+import useTaskContext from "../hooks/useTaskContext";
 
 interface Props {
   name: string;
-  tasks: TaskWithTaskList[];
+  tasks: TaskWithSingularTaskList[];
+  id: string;
 }
 
-function TaskList({ name, tasks }: Props) {
-  return (
-    <div className="taskList rightPanel">
-      <header contentEditable>{name}</header>
-      <div className="taskListToolbar">
-        <Stack spacing={2} direction={"row"}>
-          <Button>
-            <svg width="20px" height="20px">
-              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"></path>
-            </svg>
-            Back
-          </Button>
+function TaskList({ name, tasks, id }: Props) {
+  const {
+    taskArray: { reindexTaskList },
+  } = useTaskContext();
 
-          <Stack spacing={0.5} direction={"row"}>
-            <Button>
-              Add Task (
-              <svg width="21px" height="20px">
-                <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6 6 6 1.41-1.41L5.83 13H21V7z"></path>
-              </svg>
-              )
-            </Button>
-            <Button>Import Task</Button>
-          </Stack>
-        </Stack>
-        <Button color="error">Delete List</Button>
+  const sortedTaskList = tasks
+    .slice()
+    .sort((a, b) => a.taskList.index - b.taskList.index);
+
+  const handleDragEnd = (result: DropResult) => {
+    if (result == null || result.destination == null) return;
+    const { source, destination } = result;
+    reindexTaskList(id, source.index, destination.index);
+  };
+
+  return (
+    <>
+      <div className="taskList rightPanel">
+        <TaskListHeader name={name} />
+
+        <DragDropContext onDragEnd={handleDragEnd}>
+          <Droppable droppableId="tasks-wrapper">
+            {(provided) => (
+              <TaskListTasksWrapper
+                ref={provided.innerRef}
+                {...provided.droppableProps}
+              >
+                {sortedTaskList.map((task, index) => {
+                  return (
+                    <Draggable
+                      draggableId={task.id}
+                      index={index}
+                      key={task.id}
+                    >
+                      {(_provided, _snapshot) => (
+                        <TaskListTask
+                          ref={_provided.innerRef}
+                          dragHandleProps={_provided.dragHandleProps }
+                          {..._provided.draggableProps}
+                          snapshot={_snapshot}
+                          task={task}
+                        >
+                          {provided ? provided.placeholder : null}
+                        </TaskListTask>
+                        
+                      ) }
+                      
+                    </Draggable>
+                  );
+                })}
+              </TaskListTasksWrapper>
+            )}
+          </Droppable>
+        </DragDropContext>
+
+        {/* <Sortable className="tasks">
+          {sortedTaskList.map((task, index) => (
+            <TaskListTask task={task} key={index} />
+          ))}
+        </Sortable> */}
+
+        {/* <ul className="tasks">
+          {
+          ))}
+        </ul> */}
       </div>
-    </div>
+    </>
   );
 }
 

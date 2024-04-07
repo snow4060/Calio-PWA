@@ -28,14 +28,71 @@
   margin-left: 10%;
 }
 
+.taskList {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
 .taskList header {
   padding: 10px 30px 10px;
   font-size: 28px;
-  color: aliceblue;
+  color: #f0f8ff;
+  width: fit-content;
 }
 
 .taskListToolbar {
   padding: 0 5%;
   display: flex;
   justify-content: space-between;
+}
+
+.tasks {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-radius: 5px;
+  background-color: aliceblue;
+}
+
+.taskName {
+  width: calc(100% - 150px);
+  max-width: calc(100% - 150px);
+  text-align: left;
+  margin-left: 15px;
+  word-break: break-all;
+  white-space: nowrap;
+  text-wrap: nowrap;
+  overflow: scroll;
+
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.taskName::-webkit-scrollbar {
+  display: none;
+}
+
+.taskDragHandle {
+  position: absolute !important;
+  right: 50px;
+}
+
+.taskDragHandle:hover {
+  cursor: grab;
+}
+.taskDragHandle:active {
+  cursor: grabbing;
+}
+
+.draggable {
+  top: auto !important;
+  left: auto !important;
+  position: static !important;
 }

@@ -1,8 +1,9 @@
 import React, { ReactNode } from "react";
-import useArray from "../util/hooks/useArray";
+import useTaskArray from "../util/hooks/useTaskArray";
 
 type Calendar = {
   categoryName: string;
+  categoryId: string;
   date: Date | null;
   index: number;
 };
@@ -10,6 +11,7 @@ type Calendar = {
 type TaskList = {
   lastModified: Date;
   taskListName: string;
+  taskListId: string;
   index: number;
 };
 
@@ -24,19 +26,27 @@ export type Task = {
 
 export type TaskWithTaskList = Task & { taskList: TaskList[] };
 export type TaskWithCalendar = Task & { calendar: Calendar[] };
+export type TaskWithSingularTaskList = Omit<Task, "taskList"> & {
+  taskList: TaskList;
+};
 
 export const TaskContext = React.createContext<{
-  taskArray: ReturnType<typeof useArray<Task>>;
+  taskArray: ReturnType<typeof useTaskArray>;
 }>({
   taskArray: {
-    array: [],
-    length: 0,
-    setArray: () => null,
-    push: () => null,
-    filter: () => null,
-    update: () => null,
-    updateCallback: () => null,
-    remove: () => null,
+    taskArray: {
+      array: [],
+      length: 0,
+      setArray: () => null,
+      push: () => null,
+      filter: () => null,
+      update: () => null,
+      updateCallback: () => null,
+      remove: () => null,
+    },
+    getTaskIndex: () => 0,
+    setTaskProp: () => null,
+    reindexTaskList: () => null
   },
 });
 
@@ -52,6 +62,7 @@ const TEST_TASK_ARRAY: Task[] = [
       {
         lastModified: new Date(),
         taskListName: "task list 1",
+        taskListId: "tla",
         index: 4,
       },
     ],
@@ -66,6 +77,7 @@ const TEST_TASK_ARRAY: Task[] = [
       {
         lastModified: new Date(),
         taskListName: "task list 1",
+        taskListId: "tla",
         index: 1,
       },
     ],
@@ -80,6 +92,7 @@ const TEST_TASK_ARRAY: Task[] = [
       {
         lastModified: new Date(),
         taskListName: "task list 1",
+        taskListId: "tla",
         index: 2,
       },
     ],
@@ -94,6 +107,7 @@ const TEST_TASK_ARRAY: Task[] = [
       {
         lastModified: new Date(),
         taskListName: "task list 1",
+        taskListId: "tla",
         index: 3,
       },
     ],
@@ -108,6 +122,7 @@ const TEST_TASK_ARRAY: Task[] = [
       {
         lastModified: new Date(),
         taskListName: "task list 1",
+        taskListId: "tla",
         index: 0,
       },
     ],
@@ -130,11 +145,13 @@ const TEST_TASK_ARRAY: Task[] = [
       {
         lastModified: new Date(),
         taskListName: "task list 1",
+        taskListId: "tla",
         index: 5,
       },
       {
         lastModified: new Date(),
         taskListName: "task list 2",
+        taskListId: "tlb",
         index: 0,
       },
     ],
@@ -149,6 +166,7 @@ const TEST_TASK_ARRAY: Task[] = [
       {
         lastModified: new Date(2050, 0, 1),
         taskListName: "task list 2",
+        taskListId: "tlb",
         index: 1,
       },
     ],
@@ -160,7 +178,8 @@ interface Props {
 }
 
 function TaskContextProvider({ children }: Props) {
-  const taskArray = useArray<Task>(TEST_TASK_ARRAY);
+  // const taskArray = useArray<Task>(TEST_TASK_ARRAY);
+  const taskArray = useTaskArray(TEST_TASK_ARRAY);
   // const loadTasks = () => {};
 
   return (

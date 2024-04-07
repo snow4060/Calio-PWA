@@ -1,15 +1,16 @@
-import { TaskWithTaskList } from "../context/TaskContext";
+import { TaskWithSingularTaskList } from "../context/TaskContext";
 import useTabContext from "../hooks/useTabContext";
 import TaskList from "./TaskList";
 
 interface Props {
   name: string;
-  tasks: TaskWithTaskList[];
+  tasks: TaskWithSingularTaskList[];
   lastModified: Date;
+  id: string;
 }
 
-function TaskListOverview({ name, tasks, lastModified }: Props) {
-  const {setTab} = useTabContext();
+function TaskListOverview({ name, tasks, lastModified, id }: Props) {
+  const { setTab } = useTabContext();
 
   let completedTasks = 0;
   for (const task of tasks) {
@@ -19,8 +20,8 @@ function TaskListOverview({ name, tasks, lastModified }: Props) {
   }
 
   const handleClick = () => {
-    setTab(<TaskList name={name} tasks={tasks} />)
-  }
+    setTab(<TaskList name={name} tasks={tasks} id={id}/>);
+  };
 
   return (
     <>
