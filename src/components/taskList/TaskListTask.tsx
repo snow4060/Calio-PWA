@@ -22,11 +22,11 @@ const TaskListTask = forwardRef(
     ref: Ref<HTMLLIElement>
   ) => {
     const {
-      taskArray: { removeTaskListInstance },
+      taskArray,
     } = useTaskContext();
 
     const deleteTaskListInstance = () => {
-      removeTaskListInstance(taskListId, task.id);
+      taskArray.removeTaskListInstance(taskListId, task.id);
     };
 
     return (
@@ -40,16 +40,23 @@ const TaskListTask = forwardRef(
           sx={{
             color: "black",
           }}
+          defaultChecked={task.completed}
+          onChange={() => {taskArray.setTaskProp(task.id, "completed", undefined, task.id)}}
         />
         <div
           contentEditable
           suppressContentEditableWarning={true}
           className="taskName"
+          style={{ textDecoration: task.completed ? "line-through" : "" }}
         >
           {task.title}
           <span style={{ display: "none" }}>{children}</span>
         </div>
-        <IconButton aria-label="delete" className="deleteTask" onClick={deleteTaskListInstance}>
+        <IconButton
+          aria-label="delete"
+          className="deleteTask"
+          onClick={deleteTaskListInstance}
+        >
           <ClearIcon style={{ color: "black" }} />
         </IconButton>
         <span {...dragHandleProps} className="taskDragHandle">
