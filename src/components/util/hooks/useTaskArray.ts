@@ -177,7 +177,7 @@ function useTaskArray(defaultValue?: Task[]) {
               categoryId: calendar.calendarId,
               categoryName: calendar.calendarName,
               date: calendar.calendarDate,
-              index: getHighestCalendarIndex(calendar.calendarId),
+              index: getHighestCalendarIndex(calendar.calendarId) + 1,
             },
           ]
         : null,
@@ -187,7 +187,7 @@ function useTaskArray(defaultValue?: Task[]) {
               taskListId: taskList.taskListId,
               taskListName: taskList.taskListName,
               lastModified: new Date(),
-              index: getHighestTaskListIndex(taskList.taskListId),
+              index: getHighestTaskListIndex(taskList.taskListId) + 1,
             },
           ]
         : null,
@@ -201,7 +201,7 @@ function useTaskArray(defaultValue?: Task[]) {
     setTaskProp,
     reindexTaskList,
     removeTaskListInstance,
-    addTask
+    addTask,
   };
 }
 
