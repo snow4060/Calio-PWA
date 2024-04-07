@@ -95,7 +95,45 @@ function useTaskArray(defaultValue?: Task[]) {
     taskArray.setArray(newTaskArray);
   }
 
-  return { taskArray, getTaskIndex, setTaskProp, reindexTaskList };
+  function removeTaskListInsstance(taskListId: string, taskId: string) {
+    const newTaskArray = [...taskArray.array];
+    const taskIndex = newTaskArray.findIndex((task) => task.id === taskId);
+    if (taskIndex === -1) {
+      throw new Error("no task with id found.");
+    }
+    if (newTaskArray[taskIndex].taskList === null) {
+      throw new Error("no task list found.");
+    }
+    const removedIndex = newTaskArray[taskIndex].taskList!.find(
+      (taskListInstance) => taskListInstance.taskListId === taskListId
+    )?.index;
+    if (removedIndex === undefined) {
+      throw new Error("no task list found.");
+    }
+    newTaskArray[taskIndex].taskList = newTaskArray[taskIndex].taskList!.filter(
+      (taskListInstance) => taskListInstance.taskListId !== taskListId
+    );
+    // re-index the task list instances
+    newTaskArray.forEach((task) =>
+      task.taskList?.forEach((taskListInstance) => {
+        if (
+          taskListInstance.taskListId === taskListId &&
+          taskListInstance.index > removedIndex
+        ) {
+          taskListInstance.index -= 1;
+        }
+      })
+    );
+    taskArray.setArray(newTaskArray);
+  }
+
+  return {
+    taskArray,
+    getTaskIndex,
+    setTaskProp,
+    reindexTaskList,
+    removeTaskListInsstance,
+  };
 }
 
 export default useTaskArray;

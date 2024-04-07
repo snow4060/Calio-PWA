@@ -81,7 +81,7 @@
 
 .taskDragHandle {
   position: absolute !important;
-  right: 50px;
+  right: 25px;
 }
 
 .taskDragHandle:hover {
@@ -95,4 +95,9 @@
   top: auto !important;
   left: auto !important;
   position: static !important;
+}
+
+.deleteTask {
+  position: absolute;
+  right: 5px;
 }

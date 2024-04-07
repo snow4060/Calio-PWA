@@ -1,4 +1,3 @@
-import { TaskWithSingularTaskList } from "../context/TaskContext";
 import TaskListHeader from "./TaskListHeader";
 import TaskListTask from "./TaskListTask";
 
@@ -10,17 +9,18 @@ import {
 } from "@hello-pangea/dnd";
 import TaskListTasksWrapper from "./TaskListTasksWrapper";
 import useTaskContext from "../hooks/useTaskContext";
+import { formatTaskLists } from "./formatTaskList";
 
 interface Props {
   name: string;
-  tasks: TaskWithSingularTaskList[];
   id: string;
 }
 
-function TaskList({ name, tasks, id }: Props) {
-  const {
-    taskArray: { reindexTaskList },
-  } = useTaskContext();
+function TaskList({ name, id }: Props) {
+  const { taskArray } = useTaskContext();
+
+  const allTaskLists = formatTaskLists(taskArray.taskArray.array).filter(taskList => taskList.id === id);
+  const tasks =  allTaskLists.length > 0 ? allTaskLists[0].tasks : []; 
 
   const sortedTaskList = tasks
     .slice()
@@ -29,7 +29,7 @@ function TaskList({ name, tasks, id }: Props) {
   const handleDragEnd = (result: DropResult) => {
     if (result == null || result.destination == null) return;
     const { source, destination } = result;
-    reindexTaskList(id, source.index, destination.index);
+    taskArray.reindexTaskList(id, source.index, destination.index);
   };
 
   return (
@@ -54,16 +54,15 @@ function TaskList({ name, tasks, id }: Props) {
                       {(_provided, _snapshot) => (
                         <TaskListTask
                           ref={_provided.innerRef}
-                          dragHandleProps={_provided.dragHandleProps }
+                          taskListId={id}
+                          dragHandleProps={_provided.dragHandleProps}
                           {..._provided.draggableProps}
                           snapshot={_snapshot}
                           task={task}
                         >
                           {provided ? provided.placeholder : null}
                         </TaskListTask>
-                        
-                      ) }
-                      
+                      )}
                     </Draggable>
                   );
                 })}
