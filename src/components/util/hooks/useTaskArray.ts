@@ -177,7 +177,10 @@ function useTaskArray(defaultValue?: Task[]) {
               categoryId: calendar.calendarId,
               categoryName: calendar.calendarName,
               date: calendar.calendarDate,
-              index: getHighestCalendarIndex(calendar.calendarId) === 0 ? 0 : getHighestCalendarIndex(calendar.calendarId) + 1,
+              index:
+                getHighestCalendarIndex(calendar.calendarId) === 0
+                  ? 0
+                  : getHighestCalendarIndex(calendar.calendarId) + 1,
             },
           ]
         : null,
@@ -187,7 +190,10 @@ function useTaskArray(defaultValue?: Task[]) {
               taskListId: taskList.taskListId,
               taskListName: taskList.taskListName,
               lastModified: new Date(),
-              index: getHighestTaskListIndex(taskList.taskListId) === 0 ? 0 : getHighestTaskListIndex(taskList.taskListId) + 1,
+              index:
+                getHighestTaskListIndex(taskList.taskListId) === 0
+                  ? 0
+                  : getHighestTaskListIndex(taskList.taskListId) + 1,
             },
           ]
         : null,
@@ -195,13 +201,69 @@ function useTaskArray(defaultValue?: Task[]) {
     });
   }
 
-  function deleteTaskList(taskListId: string){
-    const newTaskArray = [...taskArray.array]
+  function deleteTaskList(taskListId: string) {
+    const newTaskArray = [...taskArray.array];
     newTaskArray.forEach((task) => {
-      if(task.taskList !== null){
-        task.taskList = task.taskList.filter((taskListInstance) => taskListInstance.taskListId !== taskListId)
+      if (task.taskList !== null) {
+        task.taskList = task.taskList.filter(
+          (taskListInstance) => taskListInstance.taskListId !== taskListId
+        );
       }
-    })
+    });
+    taskArray.setArray(newTaskArray);
+  }
+
+  function getUnincorporatedTasks(
+    taskListId: string
+  ): { taskName: string; taskId: string }[] {
+    const unincorporatedTasks: { taskName: string; taskId: string }[] = [];
+    taskArray.array.forEach((task) => {
+      if (task.taskList === null) {
+        unincorporatedTasks.push({ taskName: task.title, taskId: task.id });
+      } else if (
+        !task.taskList.some(
+          (taskListInstance) => taskListInstance.taskListId === taskListId
+        )
+      ) {
+        unincorporatedTasks.push({ taskName: task.title, taskId: task.id });
+      }
+    });
+    return unincorporatedTasks;
+  }
+
+  function addTaskListInstance(
+    taskId: string,
+    taskListName: string,
+    taskListId: string
+  ) {
+    const newTaskArray = [...taskArray.array];
+    const index = newTaskArray.findIndex((task) => task.id === taskId);
+    if (index === -1) {
+      throw new Error("no task with id found.");
+    }
+    if (newTaskArray[index].taskList === null) {
+      newTaskArray[index].taskList = [
+        {
+          taskListName: taskListName,
+          taskListId: taskListId,
+          lastModified: new Date(),
+          index:
+            getHighestTaskListIndex(taskListId) === 0
+              ? 0
+              : getHighestTaskListIndex(taskListId) + 1,
+        },
+      ];
+    } else {
+      newTaskArray[index].taskList!.push({
+        taskListName: taskListName,
+        taskListId: taskListId,
+        lastModified: new Date(),
+        index:
+          getHighestTaskListIndex(taskListId) === 0
+            ? 0
+            : getHighestTaskListIndex(taskListId) + 1,
+      });
+    }
     taskArray.setArray(newTaskArray);
   }
 
@@ -213,8 +275,10 @@ function useTaskArray(defaultValue?: Task[]) {
     removeTaskListInstance,
     addTask,
     deleteTaskList,
-    getHighestCalendarIndex, 
-    getHighestTaskListIndex
+    getHighestCalendarIndex,
+    getHighestTaskListIndex,
+    getUnincorporatedTasks,
+    addTaskListInstance,
   };
 }
 

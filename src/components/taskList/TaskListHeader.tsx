@@ -5,6 +5,9 @@ import TaskLists from "./TaskLists";
 import useTabContext from "../hooks/useTabContext";
 import useTaskContext from "../hooks/useTaskContext";
 import { useEffect } from "react";
+import useModalContext from "../modal/hooks/useModalContext";
+import { ModalFunction } from "../modal/context/ModalContext";
+import ImportTask from "../modalContent/ImportTask";
 
 interface Props {
   id: string;
@@ -14,16 +17,7 @@ interface Props {
 function TaskListHeader({ id, name }: Props) {
   const { setTab } = useTabContext();
   const { taskArray } = useTaskContext();
-
-  // let name = "";
-  // taskArray.taskArray.array.forEach((task) => {
-  //   const index = task.taskList?.findIndex(
-  //     (taskListInstance) => taskListInstance.taskListId === id
-  //   );
-  //   if (index !== -1 && index !== undefined) {
-  //     name = task.taskList![index].taskListName;
-  //   }
-  // });
+  const { useModal, setOpen } = useModalContext();
 
   const handleClickBack = () => {
     setTab(<TaskLists />);
@@ -44,10 +38,14 @@ function TaskListHeader({ id, name }: Props) {
   };
 
   const handleDeleteTaskList = () => {
-    if(!confirm(`Delete ${name}?`)) return;
+    if (!confirm(`Delete ${name}?`)) return;
     taskArray.deleteTaskList(id);
-    setTab(<TaskLists />)
-  }
+    setTab(<TaskLists />);
+  };
+
+  const handleImportTask = (modal: ModalFunction) => {
+    modal(<ImportTask taskListId={id} taskListName={name} setModalOpen={setOpen} />, 25)
+  };
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
@@ -72,7 +70,7 @@ function TaskListHeader({ id, name }: Props) {
               Add Task (
               <KeyboardReturnIcon />)
             </Button>
-            <Button>Import Task</Button>
+            <Button onClick={() => handleImportTask(useModal)}>Import Task</Button>
           </Stack>
         </Stack>
         <Button

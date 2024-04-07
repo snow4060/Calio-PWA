@@ -3,6 +3,7 @@ import LeftPanel from "./components/leftPanel/LeftPanel";
 import TaskContextProvider from "./components/context/TaskContext";
 import useTabContext from "./components/hooks/useTabContext";
 import Theme from "./styles/Theme";
+import ModalProvider from "./components/modal/context/ModalContext";
 
 function App() {
   const { tab } = useTabContext();
@@ -11,7 +12,9 @@ function App() {
     <>
       <Theme>
         <LeftPanel />
-        <TaskContextProvider>{tab}</TaskContextProvider>
+        <TaskContextProvider>
+          <ModalProvider>{tab}</ModalProvider>
+        </TaskContextProvider>
       </Theme>
     </>
   );
