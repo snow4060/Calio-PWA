@@ -8,9 +8,12 @@ import {
   DraggableStateSnapshot,
 } from "@hello-pangea/dnd";
 import useTaskContext from "../hooks/useTaskContext";
+import TaskLists from "./TaskLists";
+import useTabContext from "../hooks/useTabContext";
 interface Props {
   task: TaskWithSingularTaskList;
   taskListId: string;
+  taskListName: string;
   dragHandleProps: DraggableProvidedDragHandleProps | null | undefined;
   snapshot: DraggableStateSnapshot;
   children: ReactNode;
@@ -18,13 +21,21 @@ interface Props {
 
 const TaskListTask = forwardRef(
   (
-    { task, taskListId, dragHandleProps, snapshot, children, ...rest }: Props,
+    { task, taskListId, taskListName, dragHandleProps, snapshot, children, ...rest }: Props,
     ref: Ref<HTMLLIElement>
   ) => {
     const { taskArray } = useTaskContext();
+    const {setTab} = useTabContext();
 
     const deleteTaskListInstance = () => {
-      taskArray.removeTaskListInstance(taskListId, task.id);
+      console.log(taskArray.getHighestTaskListIndex(taskListId))
+      if (taskArray.getHighestTaskListIndex(taskListId) == 0) {
+        if (!confirm(`Delete ${taskListName}?`)) return;
+        taskArray.deleteTaskList(taskListId);
+        setTab(<TaskLists />);
+      } else {
+        taskArray.removeTaskListInstance(taskListId, task.id);
+      }
     };
 
     return (

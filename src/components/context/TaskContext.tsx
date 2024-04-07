@@ -49,6 +49,9 @@ export const TaskContext = React.createContext<{
     reindexTaskList: () => null,
     removeTaskListInstance: () => null,
     addTask: () => null,
+    deleteTaskList: () => null,
+    getHighestCalendarIndex: () => 0,
+    getHighestTaskListIndex: () => 0,
   },
 });
 

@@ -18,10 +18,9 @@ interface Props {
 function TaskList({ id }: Props) {
   const { taskArray } = useTaskContext();
 
-  const allTaskLists = formatTaskLists(taskArray.taskArray.array).filter(
+  const tasks = formatTaskLists(taskArray.taskArray.array).filter(
     (taskList) => taskList.id === id
-  );
-  const tasks = allTaskLists.length > 0 ? allTaskLists[0].tasks : [];
+  )[0].tasks;
 
   const sortedTaskList = tasks
     .slice()
@@ -36,7 +35,7 @@ function TaskList({ id }: Props) {
   return (
     <>
       <div className="taskList rightPanel">
-        <TaskListHeader id={id} />
+        <TaskListHeader name={sortedTaskList[0].taskList.taskListName} id={id} />
 
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="tasks-wrapper">
@@ -56,6 +55,7 @@ function TaskList({ id }: Props) {
                         <TaskListTask
                           ref={_provided.innerRef}
                           taskListId={id}
+                          taskListName={task.taskList.taskListName}
                           dragHandleProps={_provided.dragHandleProps}
                           {..._provided.draggableProps}
                           snapshot={_snapshot}

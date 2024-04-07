@@ -8,21 +8,22 @@ import { useEffect } from "react";
 
 interface Props {
   id: string;
+  name: string;
 }
 
-function TaskListHeader({ id }: Props) {
+function TaskListHeader({ id, name }: Props) {
   const { setTab } = useTabContext();
   const { taskArray } = useTaskContext();
 
-  let name = "";
-  taskArray.taskArray.array.forEach((task) => {
-    const index = task.taskList?.findIndex(
-      (taskListInstance) => taskListInstance.taskListId === id
-    );
-    if (index !== -1 && index !== undefined) {
-      name = task.taskList![index].taskListName;
-    }
-  });
+  // let name = "";
+  // taskArray.taskArray.array.forEach((task) => {
+  //   const index = task.taskList?.findIndex(
+  //     (taskListInstance) => taskListInstance.taskListId === id
+  //   );
+  //   if (index !== -1 && index !== undefined) {
+  //     name = task.taskList![index].taskListName;
+  //   }
+  // });
 
   const handleClickBack = () => {
     setTab(<TaskLists />);
@@ -41,6 +42,12 @@ function TaskListHeader({ id }: Props) {
       createNewTask();
     }
   };
+
+  const handleDeleteTaskList = () => {
+    if(!confirm(`Delete ${name}?`)) return;
+    taskArray.deleteTaskList(id);
+    setTab(<TaskLists />)
+  }
 
   useEffect(() => {
     document.addEventListener("keydown", handleKeyDown);
@@ -73,6 +80,7 @@ function TaskListHeader({ id }: Props) {
           style={{
             color: "aliceblue",
           }}
+          onClick={handleDeleteTaskList}
         >
           Delete List
         </Button>

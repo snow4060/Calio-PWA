@@ -177,7 +177,7 @@ function useTaskArray(defaultValue?: Task[]) {
               categoryId: calendar.calendarId,
               categoryName: calendar.calendarName,
               date: calendar.calendarDate,
-              index: getHighestCalendarIndex(calendar.calendarId) + 1,
+              index: getHighestCalendarIndex(calendar.calendarId) === 0 ? 0 : getHighestCalendarIndex(calendar.calendarId) + 1,
             },
           ]
         : null,
@@ -187,12 +187,22 @@ function useTaskArray(defaultValue?: Task[]) {
               taskListId: taskList.taskListId,
               taskListName: taskList.taskListName,
               lastModified: new Date(),
-              index: getHighestTaskListIndex(taskList.taskListId) + 1,
+              index: getHighestTaskListIndex(taskList.taskListId) === 0 ? 0 : getHighestTaskListIndex(taskList.taskListId) + 1,
             },
           ]
         : null,
       id: uuidv4(),
     });
+  }
+
+  function deleteTaskList(taskListId: string){
+    const newTaskArray = [...taskArray.array]
+    newTaskArray.forEach((task) => {
+      if(task.taskList !== null){
+        task.taskList = task.taskList.filter((taskListInstance) => taskListInstance.taskListId !== taskListId)
+      }
+    })
+    taskArray.setArray(newTaskArray);
   }
 
   return {
@@ -202,6 +212,9 @@ function useTaskArray(defaultValue?: Task[]) {
     reindexTaskList,
     removeTaskListInstance,
     addTask,
+    deleteTaskList,
+    getHighestCalendarIndex, 
+    getHighestTaskListIndex
   };
 }
 
