@@ -1,7 +1,11 @@
 .taskLists header {
-  padding: 10px 30px 25px;
+  padding: 10px 50px 25px;
   font-size: 36px;
   color: aliceblue;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 }
 .divider {
   border-top: 2px solid #5d79a5;

@@ -1,14 +1,16 @@
-import { useEffect } from "react";
 import useTaskContext from "../hooks/useTaskContext";
 import TaskListOverview from "./TaskListOverview";
 
 import "./styles/taskLists.css";
 import { formatTaskLists } from "./formatTaskList";
+import { Button } from "@mui/material";
+import { v4 as uuidv4 } from "uuid";
+import useTabContext from "../hooks/useTabContext";
+import TaskList from "./TaskList";
 
 function TaskLists() {
   const { taskArray } = useTaskContext();
-
-  
+  const { setTab } = useTabContext();
 
   const formattedTaskLists = formatTaskLists(taskArray.taskArray.array);
 
@@ -16,13 +18,26 @@ function TaskLists() {
     return b.lastModified.getTime() - a.lastModified.getTime();
   });
 
-  useEffect(() => {
-    console.log("dfjsodf");
-  }, [taskArray, taskArray.taskArray, taskArray.taskArray.array]);
+  const createNewTaskList = () => {
+    const id = uuidv4();
+    taskArray.addTask("new task", "", undefined, {
+      taskListName: "untitled task list",
+      taskListId: id,
+    });
+    setTab(<TaskList id={id} />);
+  };
 
   return (
     <div className="taskLists rightPanel">
-      <header>To-Do Lists</header>
+      <header>
+        <span>To-Do Lists</span>
+        <Button
+          style={{ fontSize: "32px", padding: "none" }}
+          onClick={createNewTaskList}
+        >
+          +
+        </Button>
+      </header>
       <div className="divider"></div>
       {formattedTaskLists.map((taskList, index) => (
         <TaskListOverview
