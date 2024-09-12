@@ -66,6 +66,11 @@
   background-color: aliceblue;
 }
 
+.task{
+  top: auto !important;
+  left: auto !important;
+}
+
 .taskName {
   width: calc(100% - 150px);
   max-width: calc(100% - 150px);
