@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
 import Modal from "@mui/material/Modal";
 import { ReactNode } from "react";
+import { darkDarkBlueBackground, whiteText } from "../../styles/colors";
 
 interface Props {
   open: boolean;
@@ -19,10 +20,10 @@ function SmoothModal({ open, setOpen, verticalTranslation, children }: Props) {
     left: "50%",
     transform: "translate(-50%, -50%)",
     width: "50%",
-    bgcolor: "#171e29",
+    bgcolor: darkDarkBlueBackground,
     boxShadow: 24,
     p: "48px",
-    color: "aliceblue",
+    color: whiteText,
     borderRadius: 2,
     display: "flex",
     justifyContent: "space-between",

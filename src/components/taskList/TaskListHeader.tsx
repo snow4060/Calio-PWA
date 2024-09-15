@@ -7,6 +7,7 @@ import useModalContext from "../modal/hooks/useModalContext";
 import { ModalFunction } from "../modal/context/ModalContext";
 import ImportTask from "../modalContent/ImportTask";
 import { useNavigate } from "react-router-dom";
+import { whiteText } from "../../styles/colors";
 
 interface Props {
   id: string;
@@ -75,7 +76,7 @@ function TaskListHeader({ id, name }: Props) {
         <Button
           color="error"
           style={{
-            color: "aliceblue",
+            color: whiteText,
           }}
           onClick={handleDeleteTaskList}
         >

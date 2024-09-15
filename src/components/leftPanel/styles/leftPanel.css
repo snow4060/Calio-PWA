@@ -1,7 +1,7 @@
 .leftPanel {
   width: 125px;
   height: 100vh;
-  background-color: #171e29;
+  background-color: var(--dark-dark-blue-background);
   display: flex;
   flex-direction: column;
   align-items: end;
@@ -12,7 +12,7 @@
   height: 100px;
 }
 .bookmark {
-  fill: #516a90;
+  fill: var(--light-blue-accent);
   filter: drop-shadow(-2px 5px 5px black);
 }
 .bookmark:hover {
@@ -26,7 +26,7 @@
   transform: translate(4%, -50%) !important;
   height: 50px !important;
   width: 50px !important;
-  color: #171e29;
+  color: var(--dark-dark-blue-background);
 }
 .icon:hover {
   cursor: pointer;

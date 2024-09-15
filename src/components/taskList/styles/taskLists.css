@@ -1,21 +1,21 @@
 .taskLists header {
   padding: 10px 50px 25px;
   font-size: 36px;
-  color: aliceblue;
+  color: var(--white-text);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
 }
 .divider {
-  border-top: 2px solid #5d79a5;
+  border-top: 2px solid var(--light-blue-border);
   margin: 0 50px 0;
 }
 .taskOverview {
   margin-left: 50px;
   margin-right: 50px;
   position: relative;
-  color: aliceblue;
+  color: var(--white-text);
   padding: 10px 10px 10px;
 }
 .taskOverview:hover {
@@ -41,7 +41,7 @@
 .taskList header {
   padding: 10px 30px 10px;
   font-size: 28px;
-  color: #f0f8ff;
+  color: var(--white-text);
   width: fit-content;
 }
 
@@ -63,7 +63,7 @@
   align-items: center;
   padding: 15px;
   border-radius: 5px;
-  background-color: aliceblue;
+  background-color: var(--white-text);
 }
 
 .task{
@@ -100,13 +100,14 @@
   cursor: grabbing;
 }
 
-.draggable {
-  top: auto !important;
-  left: auto !important;
-  position: static !important;
-}
-
 .deleteTask {
   position: absolute;
   right: 5px;
 }
+
+
+/* .MuiAutocomplete-popper *{
+  background-color: red; 
+  color: red;
+  background-color: var(--dark-dark-blue-background);
+} */

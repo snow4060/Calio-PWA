@@ -25,3 +25,15 @@ body {
   width: calc(100% - 125px);
   height: 100%;
 }
+
+:root {
+  --dark-dark-blue-background: #171e29;
+  --dark-blue-background: #252e40;
+  --dark-highlight : #3a4c67;
+  --light-blue-accent: #516a90;
+  --light-blue-border: #5d79a5;
+  --text-highlight: #98BEF9;
+  --dark-border: #708397;
+  --white-text: #f0f8ff;
+  --gray-text: #aaa;
+}

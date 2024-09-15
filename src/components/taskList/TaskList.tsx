@@ -1,6 +1,5 @@
 import TaskListHeader from "./TaskListHeader";
 import TaskListTask from "./TaskListTask";
-
 import {
   DragDropContext,
   Draggable,
@@ -12,9 +11,6 @@ import useTaskContext from "../hooks/useTaskContext";
 import { formatTaskLists } from "./formatTaskList";
 import { useParams } from "react-router-dom";
 
-// interface Props {
-//   id: string;
-// }
 
 function TaskList() {
   const { taskArray } = useTaskContext();

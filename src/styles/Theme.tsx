@@ -1,6 +1,7 @@
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
 import { ReactNode } from "react";
+import { lightBlueBorder, whiteText } from "./colors";
 
 interface Props {
   children: ReactNode;
@@ -21,10 +22,10 @@ export default function Theme({ children }: Props) {
     palette: {
       mode: "dark",
       primary: {
-        main: "#f0f8ff",
+        main: whiteText,
       },
       secondary: {
-        main: "#5d79a5",
+        main: lightBlueBorder,
       },
       // error: {
       //   // main: "#fffff",
