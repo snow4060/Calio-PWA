@@ -1,6 +1,5 @@
+import { useNavigate } from "react-router-dom";
 import { TaskWithSingularTaskList } from "../context/TaskContext";
-import useTabContext from "../hooks/useTabContext";
-import TaskList from "./TaskList";
 
 interface Props {
   name: string;
@@ -10,7 +9,7 @@ interface Props {
 }
 
 function TaskListOverview({ name, tasks, lastModified, id }: Props) {
-  const { setTab } = useTabContext();
+  const navigate = useNavigate();
 
   let completedTasks = 0;
   for (const task of tasks) {
@@ -20,7 +19,7 @@ function TaskListOverview({ name, tasks, lastModified, id }: Props) {
   }
 
   const handleClick = () => {
-    setTab(<TaskList id={id}/>);
+    navigate(`/taskList/${id}`);
   };
 
   return (

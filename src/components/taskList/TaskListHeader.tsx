@@ -1,13 +1,12 @@
 import { Stack, Button } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import KeyboardReturnIcon from "@mui/icons-material/KeyboardReturn";
-import TaskLists from "./TaskLists";
-import useTabContext from "../hooks/useTabContext";
 import useTaskContext from "../hooks/useTaskContext";
 import { useEffect } from "react";
 import useModalContext from "../modal/hooks/useModalContext";
 import { ModalFunction } from "../modal/context/ModalContext";
 import ImportTask from "../modalContent/ImportTask";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   id: string;
@@ -15,12 +14,12 @@ interface Props {
 }
 
 function TaskListHeader({ id, name }: Props) {
-  const { setTab } = useTabContext();
   const { taskArray } = useTaskContext();
   const { useModal, setOpen } = useModalContext();
+  const navigate = useNavigate();
 
   const handleClickBack = () => {
-    setTab(<TaskLists />);
+    navigate("/taskList")
   };
 
   const createNewTask = () => {
@@ -40,7 +39,7 @@ function TaskListHeader({ id, name }: Props) {
   const handleDeleteTaskList = () => {
     if (!confirm(`Delete ${name}?`)) return;
     taskArray.deleteTaskList(id);
-    setTab(<TaskLists />);
+    navigate("/taskList")
   };
 
   const handleImportTask = (modal: ModalFunction) => {

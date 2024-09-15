@@ -4,17 +4,11 @@ import NotesIcon from "@mui/icons-material/Notes";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 import "./styles/leftPanel.css";
-import Calendar from "../calendar/Calendar";
-import TaskLists from "../taskList/TaskLists";
-import Notes from "../notes/Notes";
-import Settings from "../settings/Settings";
-import useTabContext from "../hooks/useTabContext";
+import { Link } from "react-router-dom";
 
-function LeftPanel() {
-  const {setTab} = useTabContext();
-  return (
+function LeftPanel() {  return (
     <div className="leftPanel">
-      <div className="bookmarkContainer" onClick={() => setTab(<Calendar />)}>
+      <Link to="/calendar" className="bookmarkContainer">
         <svg width="125" height="100">
           <polygon
             className="bookmark"
@@ -23,8 +17,8 @@ function LeftPanel() {
           />
         </svg>
         <CalendarMonthIcon className="icon" />
-      </div>
-      <div className="bookmarkContainer" onClick={() => setTab(<TaskLists />)}>
+      </Link>
+      <Link to="/taskList" className="bookmarkContainer">
         <svg width="125" height="100">
           <polygon
             className="bookmark"
@@ -33,8 +27,8 @@ function LeftPanel() {
           />
         </svg>
         <ChecklistIcon className="icon" />
-      </div>
-      <div className="bookmarkContainer" onClick={() => setTab(<Notes />)}>
+      </Link>
+      <Link to="/notes" className="bookmarkContainer">
         <svg width="125" height="100">
           <polygon
             className="bookmark"
@@ -43,8 +37,8 @@ function LeftPanel() {
           />
         </svg>
         <NotesIcon className="icon" />
-      </div>
-      <div className="bookmarkContainer" onClick={() => setTab(<Settings />)}>
+      </Link>
+      <Link to="/settings" className="bookmarkContainer">
         <svg width="125" height="100">
           <polygon
             className="bookmark"
@@ -53,7 +47,7 @@ function LeftPanel() {
           />
         </svg>
         <SettingsIcon className="icon" />
-      </div>
+      </Link>
     </div>
   );
 }

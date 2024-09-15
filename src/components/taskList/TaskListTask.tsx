@@ -8,8 +8,7 @@ import {
   DraggableStateSnapshot,
 } from "@hello-pangea/dnd";
 import useTaskContext from "../hooks/useTaskContext";
-import TaskLists from "./TaskLists";
-import useTabContext from "../hooks/useTabContext";
+import { useNavigate } from "react-router-dom";
 interface Props {
   task: TaskWithSingularTaskList;
   taskListId: string;
@@ -25,14 +24,15 @@ const TaskListTask = forwardRef(
     ref: Ref<HTMLLIElement>
   ) => {
     const { taskArray } = useTaskContext();
-    const {setTab} = useTabContext();
+    const navigate = useNavigate();
 
     const deleteTaskListInstance = () => {
       console.log(taskArray.getHighestTaskListIndex(taskListId))
       if (taskArray.getHighestTaskListIndex(taskListId) == 0) {
         if (!confirm(`Delete ${taskListName}?`)) return;
         taskArray.deleteTaskList(taskListId);
-        setTab(<TaskLists />);
+        navigate("/taskList");
+
       } else {
         taskArray.removeTaskListInstance(taskListId, task.id);
       }

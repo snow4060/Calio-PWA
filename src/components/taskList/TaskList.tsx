@@ -10,13 +10,15 @@ import {
 import TaskListTasksWrapper from "./TaskListTasksWrapper";
 import useTaskContext from "../hooks/useTaskContext";
 import { formatTaskLists } from "./formatTaskList";
+import { useParams } from "react-router-dom";
 
-interface Props {
-  id: string;
-}
+// interface Props {
+//   id: string;
+// }
 
-function TaskList({ id }: Props) {
+function TaskList() {
   const { taskArray } = useTaskContext();
+  const { id } = useParams();
 
   const tasks = formatTaskLists(taskArray.taskArray.array).filter(
     (taskList) => taskList.id === id
@@ -29,13 +31,16 @@ function TaskList({ id }: Props) {
   const handleDragEnd = (result: DropResult) => {
     if (result == null || result.destination == null) return;
     const { source, destination } = result;
-    taskArray.reindexTaskList(id, source.index, destination.index);
+    taskArray.reindexTaskList(id as string, source.index, destination.index);
   };
 
   return (
     <>
       <div className="taskList rightPanel">
-        <TaskListHeader name={sortedTaskList[0].taskList.taskListName} id={id} />
+        <TaskListHeader
+          name={sortedTaskList[0].taskList.taskListName}
+          id={id as string}
+        />
 
         <DragDropContext onDragEnd={handleDragEnd}>
           <Droppable droppableId="tasks-wrapper">
@@ -54,7 +59,7 @@ function TaskList({ id }: Props) {
                       {(_provided, _snapshot) => (
                         <TaskListTask
                           ref={_provided.innerRef}
-                          taskListId={id}
+                          taskListId={id as string}
                           taskListName={task.taskList.taskListName}
                           dragHandleProps={_provided.dragHandleProps}
                           {..._provided.draggableProps}

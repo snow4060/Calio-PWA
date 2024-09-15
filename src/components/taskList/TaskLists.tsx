@@ -5,12 +5,11 @@ import "./styles/taskLists.css";
 import { formatTaskLists } from "./formatTaskList";
 import { Button } from "@mui/material";
 import { v4 as uuidv4 } from "uuid";
-import useTabContext from "../hooks/useTabContext";
-import TaskList from "./TaskList";
+import { useNavigate } from "react-router-dom";
 
 function TaskLists() {
   const { taskArray } = useTaskContext();
-  const { setTab } = useTabContext();
+  const navigate = useNavigate();
 
   const formattedTaskLists = formatTaskLists(taskArray.taskArray.array);
 
@@ -24,7 +23,7 @@ function TaskLists() {
       taskListName: "untitled task list",
       taskListId: id,
     });
-    setTab(<TaskList id={id} />);
+    navigate(`/taskList/${id}`)
   };
 
   return (
