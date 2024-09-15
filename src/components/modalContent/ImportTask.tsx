@@ -54,7 +54,7 @@ function ImportTask({ taskListId, taskListName, setModalOpen }: Props) {
         disableCloseOnSelect
         getOptionLabel={(option) => option.taskName}
         renderOption={(props, option, { selected }) => (
-          <li {...props}>
+          <li {...props} className="importTaskListItem">
             <Checkbox
               icon={icon}
               checkedIcon={checkedIcon}

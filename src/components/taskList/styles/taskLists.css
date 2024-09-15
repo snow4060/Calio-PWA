@@ -106,8 +106,10 @@
 }
 
 
-/* .MuiAutocomplete-popper *{
-  background-color: red; 
-  color: red;
-  background-color: var(--dark-dark-blue-background);
-} */
+
+.importTaskListItem{
+  background: var(--dark-blue-background)
+}
+.importTaskListItem:hover{
+  background: var(--dark-highlight)
+}
